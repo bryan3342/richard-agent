@@ -213,6 +213,7 @@ If the file does not exist, create it as an empty JSON array `[]` first. Then ap
   "files": {
     "md": "[path to .md file]",
     "txt": "[path to .txt file]",
+    "pdf": "[path to .pdf file, or null if generation failed]",
     "cover_letter": "[path to cover letter .md]",
     "gap_coach": "[path to gap coaching .md]"
   }
@@ -234,6 +235,7 @@ ATS System:       [detected system]
 Files Generated:
   [✓] Markdown:      [CandidateName]_[RoleTitle]_Resume.md
   [✓] Plain Text:    [CandidateName]_[RoleTitle]_Resume_ATS.txt
+  [✓/✗] PDF:        [CandidateName]_[RoleTitle]_Resume.pdf  (method: md-to-pdf | chrome | failed)
   [✓/✗] Word Doc:   [status]
   [✓] Cover Letter:  [CandidateName]_[RoleTitle]_Cover_Letter.md
   [✓] Gap Report:    [CandidateName]_[RoleTitle]_Gap_Coach.md
