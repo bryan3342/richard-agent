@@ -47,27 +47,33 @@ resume to maximize ATS match score, and outputs submission-ready documents.
 
 ```
 .claude/
-├── agents/
-│   ├── jd-analyzer.md              # Extracts keywords, skills, metrics from JD → JSON
-│   ├── resume-tailor.md            # Rewrites resume using JD analysis → Markdown
-│   ├── ats-scorer.md               # Scores tailored resume 0-100 → JSON report
-│   └── resume-document-generator.md # Converts Markdown to .md / .txt / .docx
+├── agents/                          # 4 agents — only sub-agents called >1x or returning structured JSON
+│   ├── jd-analyzer.md               # Extracts keywords, skills, metrics from JD → JSON
+│   ├── resume-tailor.md             # Rewrites resume preserving original structure → Markdown
+│   ├── ats-scorer.md                # Scores tailored resume 0–100 → JSON report
+│   └── resume-document-generator.md # Converts Markdown to .md / .txt / .pdf / .docx
 │
 └── skills/
-    ├── tailor-resume/SKILL.md      # /tailor-resume — main orchestration (full pipeline)
-    ├── analyze-jd/SKILL.md         # /analyze-jd — standalone JD analysis
-    ├── ats-optimize/SKILL.md       # /ats-optimize — standalone ATS audit
-    └── generate-resume-doc/SKILL.md # /generate-resume-doc — document conversion
+    ├── tailor-resume/SKILL.md       # /tailor-resume — main orchestration (cover letter + gap coach inlined)
+    ├── analyze-jd/SKILL.md          # /analyze-jd — standalone JD analysis
+    ├── ats-optimize/SKILL.md        # /ats-optimize — standalone ATS audit
+    ├── generate-resume-doc/SKILL.md # /generate-resume-doc — document conversion
+    └── batch-tailor/SKILL.md        # /batch-tailor — multi-JD batch mode
 ```
 
 ### Agent Responsibilities
 
 | Agent | Input | Output | Model |
 |-------|-------|--------|-------|
-| `jd-analyzer` | JD file path | JSON analysis | sonnet |
-| `resume-tailor` | Resume + JD analysis | Tailored resume Markdown | opus |
+| `jd-analyzer` | JD file path or text | JSON analysis | sonnet |
+| `resume-tailor` | Resume + JD analysis (+ optional score report) | Tailored resume Markdown | opus |
 | `ats-scorer` | Resume + JD analysis | Scoring JSON report | sonnet |
-| `resume-document-generator` | Resume Markdown + output dir | .md / .txt / .docx files | haiku |
+| `resume-document-generator` | Resume Markdown + output dir | .md / .txt / .pdf / .docx files | sonnet |
+
+**Note:** Cover-letter generation and gap coaching are inlined into `tailor-resume/SKILL.md`
+(not separate sub-agents) — they each ran exactly once per pipeline, so the extra Agent()
+hop was pure latency overhead. PDF generation lives only in `resume-document-generator`
+(previously duplicated in a now-deleted `pdf-generator.md`).
 
 ### Skill Responsibilities
 

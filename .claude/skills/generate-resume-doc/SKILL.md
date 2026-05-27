@@ -10,7 +10,7 @@ argument-hint: "<resume_md_path> [output_dir]"
 context: fork
 agent: general-purpose
 allowed-tools: Read, Write, Bash
-effort: low
+effort: medium
 ---
 
 # Resume Document Generator

@@ -55,8 +55,15 @@ For each JD file found, run the full `/tailor-resume` pipeline by delegating to 
 3. **Score** — delegate to `ats-scorer` agent
 4. **Re-tailor if score < 80** — inject `critical_issues` and `quick_wins` from score report
    into a second `resume-tailor` pass (max 2 passes per JD)
-5. **Generate Documents** — delegate to `resume-document-generator` agent
+5. **Generate Documents** — delegate to `resume-document-generator` agent (handles .md, .txt,
+   .pdf, .docx in one call)
    - Output to: `[output_dir]/tailored_resumes/[company_name]/`
+   - Pass `--one-page` to enforce 1-page PDF
+
+**Note:** Cover letter and gap coaching are skipped in batch mode by default to keep runtime
+manageable. To include them, use `/tailor-resume` per JD instead. The 4 surviving agents are
+`jd-analyzer`, `resume-tailor`, `ats-scorer`, and `resume-document-generator` — no other
+sub-agents exist.
 
 Show progress after each JD:
 ```
